@@ -1,22 +1,30 @@
-import { Field, Form, Formik, ErrorMessage } from 'formik';
+import { Formik } from 'formik';
+import {
+  StyledForm,
+  StyledButton,
+  StyledLabel,
+  StyledInput,
+  StyledErrorMessage,
+} from './ContactForm.styled';
 import PropTypes from 'prop-types';
 import * as yup from 'yup';
 
-const phoneRegex = RegExp(
-  /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/
-);
+const phoneRegEx =
+  /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/;
+const nameRegEx = /^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/;
 
 const schema = yup.object().shape({
   name: yup
     .string()
-    .matches(
-      /^[^0-9]+$/,
-      'Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d`Artagnan'
-    )
+    .matches(nameRegEx, {
+      message:
+        'Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d`Artagnan',
+      excludeEmptyString: false,
+    })
     .required('Name is required field!'),
   number: yup
     .string()
-    .matches(phoneRegex, {
+    .matches(phoneRegEx, {
       message:
         'Phone number must be digits and can contain spaces, dashes, parentheses and can start with +',
       excludeEmptyString: false,
@@ -36,19 +44,17 @@ export const ContactForm = ({ onSubmit }) => {
       onSubmit={onSubmit}
       validationSchema={schema}
     >
-      <Form autoComplete="off">
-        <label htmlFor="name">
-          Friend Name:
-          <Field type="text" name="name" />
-          <ErrorMessage name="name" component="div" />
-        </label>
-        <label htmlFor="number">
-          Phone number:
-          <Field type="tel" name="number" />
-          <ErrorMessage name="number" component="div" />
-        </label>
-        <button type="submit">Add contact</button>
-      </Form>
+      <StyledForm autoComplete="off">
+        <StyledLabel htmlFor="name">Friend Name:</StyledLabel>
+        <StyledInput type="text" name="name" />
+        <StyledErrorMessage name="name" component="div" />
+
+        <StyledLabel htmlFor="number">Phone number:</StyledLabel>
+        <StyledInput type="tel" name="number" />
+        <StyledErrorMessage name="number" component="div" />
+
+        <StyledButton type="submit">Add contact</StyledButton>
+      </StyledForm>
     </Formik>
   );
 };

@@ -1,7 +1,8 @@
-import { Component } from 'react';
 import { ContactForm } from './ContactForm/ContactForm';
 import { ContactList } from './ContactList/ContactList';
 import { Filter } from './Filter/Filter';
+import { MainTitle, Wrapper, Title } from './App.styled';
+import { Component } from 'react';
 import { nanoid } from 'nanoid';
 
 export class App extends Component {
@@ -16,25 +17,57 @@ export class App extends Component {
   };
 
   handleSubmit = (values, { resetForm }) => {
+    this.compairNames(values);
     const data = { ...values, id: nanoid() };
-    this.setState(prevState => {
-      return { contacts: [...prevState.contacts, data] };
+    this.setState(({ contacts }) => {
+      return { contacts: [data, ...contacts] };
     });
     resetForm();
   };
 
-  render() {
-    return (
-      <>
-        <div>
-          <h1>Phonebook</h1>
-          <ContactForm onSubmit={this.handleSubmit} />
+  compairNames = friendInfo => {
+    const { contacts } = this.state;
 
-          <h2>Contacts</h2>
-          <Filter />
-          <ContactList contacts={this.state.contacts} />
-        </div>
-      </>
+    contacts.map(({ name }) =>
+      name === friendInfo.name
+        ? alert(`${friendInfo.name} is already in Contacts!`)
+        : friendInfo
+    );
+  };
+
+  handleFilterChange = e => {
+    this.setState({ filter: e.target.value });
+  };
+
+  getFilteredFriends = () => {
+    const { filter, contacts } = this.state;
+
+    const normalizedFilterValue = filter.toLowerCase();
+    return contacts.filter(({ name }) =>
+      name.toLowerCase().includes(normalizedFilterValue)
+    );
+  };
+
+  deleteFriend = friendId => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(contact => contact.id !== friendId),
+    }));
+  };
+
+  render() {
+    const { handleSubmit, handleFilterChange, deleteFriend } = this;
+    const { filter } = this.state;
+    const filteredFriends = this.getFilteredFriends();
+
+    return (
+      <Wrapper>
+        <MainTitle>Phonebook</MainTitle>
+        <ContactForm onSubmit={handleSubmit} />
+
+        <Title>Contacts</Title>
+        <Filter onChange={handleFilterChange} value={filter} />
+        <ContactList contacts={filteredFriends} onDeleteFriend={deleteFriend} />
+      </Wrapper>
     );
   }
 }
