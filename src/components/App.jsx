@@ -17,22 +17,23 @@ export class App extends Component {
   };
 
   handleSubmit = (values, { resetForm }) => {
-    this.compairNames(values);
-    const data = { ...values, id: nanoid() };
+    const result = this.compairNames(values);
+    if (result) return;
+
+    values.id = nanoid();
     this.setState(({ contacts }) => {
-      return { contacts: [data, ...contacts] };
+      return { contacts: [values, ...contacts] };
     });
     resetForm();
   };
 
   compairNames = friendInfo => {
     const { contacts } = this.state;
-
-    contacts.map(({ name }) =>
-      name === friendInfo.name
-        ? alert(`${friendInfo.name} is already in Contacts!`)
-        : friendInfo
+    const found = contacts.find(
+      ({ name }) => name.toLowerCase() === friendInfo.name.toLowerCase()
     );
+    if (found) alert(`${friendInfo.name} already in the list`);
+    return found;
   };
 
   handleFilterChange = e => {
