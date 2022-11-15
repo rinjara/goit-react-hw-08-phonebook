@@ -1,13 +1,12 @@
 export const selectContacts = state => state.contacts;
 
-export const selectFilter = state => state.filter.value;
+export const selectFilter = state => state.filter;
 
 export const selectFilteredContacts = state => {
-  const contacts = selectContacts(state);
+  const friends = selectContacts(state);
   const filterFriends = selectFilter(state).toLowerCase();
 
-  const visibleFriends = contacts.filter(({ name }) =>
-    name.toLowerCase().includes(filterFriends)
+  return friends.filter(friend =>
+    friend.name.toLowerCase().includes(filterFriends)
   );
-  return visibleFriends;
 };
