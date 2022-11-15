@@ -1,8 +1,8 @@
 {
-  "name": "hw-06-phonebook",
+  "name": "hw-07-phonebook-async",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://rinjara.github.io/goit-react-hw-06-phonebook/",
+  "homepage": "https://rinjara.github.io/goit-react-hw-07-phonebook/",
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.0",
     "@testing-library/jest-dom": "^5.16.3",
