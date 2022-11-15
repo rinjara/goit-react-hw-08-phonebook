@@ -1,8 +1,12 @@
 import { ListItem, StyledList } from './ContactList.styled';
 import { Contact } from './Contact';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
+import { selectFilteredContacts } from 'redux/selectors';
 
-export const ContactList = ({ contacts, onDeleteFriend }) => {
+export const ContactList = ({ onDeleteFriend }) => {
+  const contacts = useSelector(selectFilteredContacts);
+
   return (
     <StyledList>
       {contacts.map(contact => (
@@ -11,7 +15,6 @@ export const ContactList = ({ contacts, onDeleteFriend }) => {
             id={contact.id}
             name={contact.name}
             number={contact.number}
-            onDeleteFriend={onDeleteFriend}
           />
         </ListItem>
       ))}
@@ -20,7 +23,6 @@ export const ContactList = ({ contacts, onDeleteFriend }) => {
 };
 
 ContactList.propTypes = {
-  onDeleteFriend: PropTypes.func.isRequired,
   contacts: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,

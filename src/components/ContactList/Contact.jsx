@@ -1,7 +1,11 @@
 import { DelButton, Paragraph, Text } from './ContactList.styled';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { deleteContact } from 'redux/contactsSlice';
 
-export const Contact = ({ name, number, id, onDeleteFriend }) => {
+export const Contact = ({ name, number, id }) => {
+  const dispatch = useDispatch();
+
   return (
     <>
       <Paragraph>
@@ -10,7 +14,7 @@ export const Contact = ({ name, number, id, onDeleteFriend }) => {
       <DelButton
         type="button"
         onClick={() => {
-          onDeleteFriend(id);
+          dispatch(deleteContact(id));
         }}
       >
         Delete
@@ -23,5 +27,4 @@ Contact.propTypes = {
   name: PropTypes.string.isRequired,
   number: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
-  onDeleteFriend: PropTypes.func.isRequired,
 };

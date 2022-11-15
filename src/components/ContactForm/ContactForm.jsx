@@ -6,8 +6,10 @@ import {
   StyledInput,
   StyledErrorMessage,
 } from './ContactForm.styled';
-import PropTypes from 'prop-types';
 import * as yup from 'yup';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact } from 'redux/contactsSlice';
+import { selectContacts } from 'redux/selectors';
 
 const phoneRegEx =
   /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/;
@@ -37,11 +39,27 @@ const initialValues = {
   number: '',
 };
 
-export const ContactForm = ({ onSubmit }) => {
+export const ContactForm = () => {
+  const dispatch = useDispatch();
+  const contacts = useSelector(selectContacts);
+
+  const handleSubmit = (values, { resetForm }) => {
+    const isSameNameInTheList = contacts.find(
+      ({ name }) => name.toLowerCase() === values.name.toLowerCase()
+    );
+    if (isSameNameInTheList) {
+      alert(`${values.name} is already in the list!`);
+      return;
+    }
+
+    dispatch(addContact(values));
+    resetForm();
+  };
+
   return (
     <Formik
       initialValues={initialValues}
-      onSubmit={onSubmit}
+      onSubmit={handleSubmit}
       validationSchema={schema}
     >
       <StyledForm autoComplete="off">
@@ -57,8 +75,4 @@ export const ContactForm = ({ onSubmit }) => {
       </StyledForm>
     </Formik>
   );
-};
-
-ContactForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
 };

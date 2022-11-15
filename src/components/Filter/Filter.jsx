@@ -1,7 +1,17 @@
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+import { changeFilter } from 'redux/filterSlice';
+import { selectFilter } from 'redux/selectors';
 import { StyledInput, StyledLabel } from './Filter.styled';
 
-export const Filter = ({ onChange, value }) => {
+export const Filter = () => {
+  const filter = useSelector(selectFilter);
+  const dispatch = useDispatch();
+
+  const handleFilterChange = e => {
+    dispatch(changeFilter(e.target.value));
+  };
+
   return (
     <div>
       <StyledLabel htmlFor="filter">
@@ -9,15 +19,10 @@ export const Filter = ({ onChange, value }) => {
         <StyledInput
           type="text"
           name="filter"
-          onChange={onChange}
-          value={value}
+          value={filter}
+          onChange={handleFilterChange}
         />
       </StyledLabel>
     </div>
   );
-};
-
-Filter.propTypes = {
-  onChange: PropTypes.func.isRequired,
-  value: PropTypes.string.isRequired,
 };
