@@ -1,10 +1,10 @@
 import { DelButton, Paragraph, Text } from './ContactList.styled';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
-import { deleteContact } from 'redux/contactsSlice';
+import { useDeleteContactMutation } from 'redux/contactsRTKSlice';
+import { toast } from 'react-toastify';
 
 export const Contact = ({ name, number, id }) => {
-  const dispatch = useDispatch();
+  const [deleteContact, { isLoading }] = useDeleteContactMutation();
 
   return (
     <>
@@ -14,8 +14,10 @@ export const Contact = ({ name, number, id }) => {
       <DelButton
         type="button"
         onClick={() => {
-          dispatch(deleteContact(id));
+          deleteContact(id);
+          toast.success(`Your contact ${name} was successfully deleted!`);
         }}
+        disabled={isLoading}
       >
         Delete
       </DelButton>

@@ -7,9 +7,11 @@ import {
   StyledErrorMessage,
 } from './ContactForm.styled';
 import * as yup from 'yup';
-import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from 'redux/contactsSlice';
-import { selectContacts } from 'redux/selectors';
+import {
+  useAddContactMutation,
+  useFetchContactsQuery,
+} from 'redux/contactsRTKSlice';
+import { toast } from 'react-toastify';
 
 const phoneRegEx =
   /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/;
@@ -40,39 +42,49 @@ const initialValues = {
 };
 
 export const ContactForm = () => {
-  const dispatch = useDispatch();
-  const contacts = useSelector(selectContacts);
+  const { data: contacts } = useFetchContactsQuery();
+  const [addContact, { isLoading }] = useAddContactMutation();
 
-  const handleSubmit = (values, { resetForm }) => {
+  const handleSubmit = async (values, { resetForm }) => {
     const isSameNameInTheList = contacts.find(
       ({ name }) => name.toLowerCase() === values.name.toLowerCase()
     );
     if (isSameNameInTheList) {
-      alert(`${values.name} is already in the list!`);
+      toast.error(`${values.name} is already in the list!`);
       return;
     }
-
-    dispatch(addContact(values));
-    resetForm();
+    try {
+      await addContact(values);
+      toast.success('Contact added');
+      resetForm();
+    } catch (error) {
+      toast.error(`${error.message}`);
+    }
   };
 
   return (
-    <Formik
-      initialValues={initialValues}
-      onSubmit={handleSubmit}
-      validationSchema={schema}
-    >
-      <StyledForm autoComplete="off">
-        <StyledLabel htmlFor="name">Friend Name:</StyledLabel>
-        <StyledInput type="text" name="name" />
-        <StyledErrorMessage name="name" component="div" />
+    <div>
+      {isLoading ? (
+        <b>Loading...</b>
+      ) : (
+        <Formik
+          initialValues={initialValues}
+          onSubmit={handleSubmit}
+          validationSchema={schema}
+        >
+          <StyledForm autoComplete="off">
+            <StyledLabel htmlFor="name">Friend Name:</StyledLabel>
+            <StyledInput type="text" name="name" />
+            <StyledErrorMessage name="name" component="div" />
 
-        <StyledLabel htmlFor="number">Phone number:</StyledLabel>
-        <StyledInput type="tel" name="number" />
-        <StyledErrorMessage name="number" component="div" />
+            <StyledLabel htmlFor="number">Phone number:</StyledLabel>
+            <StyledInput type="tel" name="number" />
+            <StyledErrorMessage name="number" component="div" />
 
-        <StyledButton type="submit">Add contact</StyledButton>
-      </StyledForm>
-    </Formik>
+            <StyledButton type="submit">Add contact</StyledButton>
+          </StyledForm>
+        </Formik>
+      )}
+    </div>
   );
 };

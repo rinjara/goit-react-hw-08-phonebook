@@ -1,33 +1,39 @@
 import { ListItem, StyledList } from './ContactList.styled';
 import { Contact } from './Contact';
-import PropTypes from 'prop-types';
+import { useFetchContactsQuery } from 'redux/contactsRTKSlice';
+import { selectFilter } from 'redux/selectors';
 import { useSelector } from 'react-redux';
-import { selectFilteredContacts } from 'redux/selectors';
+import { toast } from 'react-toastify';
 
-export const ContactList = ({ onDeleteFriend }) => {
-  const contacts = useSelector(selectFilteredContacts);
+export const ContactList = () => {
+  const { data: contacts, error, isLoading } = useFetchContactsQuery();
+  const filterName = useSelector(selectFilter).toLowerCase().trim();
+  const filteredContacts =
+    filterName === ''
+      ? contacts
+      : contacts.filter(friend =>
+          friend.name.toLowerCase().includes(filterName)
+        );
 
   return (
-    <StyledList>
-      {contacts.map(contact => (
-        <ListItem key={contact.id}>
-          <Contact
-            id={contact.id}
-            name={contact.name}
-            number={contact.number}
-          />
-        </ListItem>
-      ))}
-    </StyledList>
-  );
-};
+    <div>
+      {contacts && (
+        <StyledList>
+          {filteredContacts.map(contact => (
+            <ListItem key={contact.id}>
+              <Contact
+                id={contact.id}
+                name={contact.name}
+                number={contact.number}
+              />
+            </ListItem>
+          ))}
+        </StyledList>
+      )}
 
-ContactList.propTypes = {
-  contacts: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-    })
-  ),
+      {isLoading && <b> Loading...</b>}
+
+      {error && toast.error('Something wrong :( Please, try again later!')}
+    </div>
+  );
 };
