@@ -1,35 +1,46 @@
-import { ContactForm } from './ContactForm/ContactForm';
-import { ContactList } from './ContactList/ContactList';
-import { Filter } from './Filter/Filter';
-import { MainTitle, Wrapper, Title } from './App.styled';
-import { ToastContainer } from 'react-toastify';
+// import { ContactForm } from './ContactForm/ContactForm';
+// import { ContactList } from './ContactList/ContactList';
+// import { Filter } from './Filter/Filter';
+// import { MainTitle, Wrapper, Title } from './App.styled';
+// import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 // import { Suspense } from 'react';
-// import { Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 import LoginForm from '../pages/LoginForm';
 import RegistrationForm from '../pages/RegistrationForm';
+// import { ContactForm } from './ContactForm/ContactForm';
+import ContactsAppBar from './AppBar/AppBar';
+import Contacts from 'pages/Contacts';
+
+// import ContactsAppBar from './AppBar/AppBar';
 
 export const App = () => {
   return (
-    <Wrapper>
-      {/* <Suspense fallback={<div>Loading...</div>}>
-        <Routes>
-          <Route path="/register" />
-          <Route path="/login" />
-          <Route path="/contacts" />
-        </Routes>
-      </Suspense> */}
+    <>
+      {/* <ContactsAppBar />
       <RegistrationForm />
-      <LoginForm />
+      <LoginForm /> */}
 
-      <ToastContainer />
-      <MainTitle>Phonebook</MainTitle>
-      <ContactForm />
-      <Title>Contacts</Title>
-      <Filter />
-      <ContactList />
-    </Wrapper>
+      {/* <Wrapper> */}
+      {/* <Suspense fallback={<div>Loading...</div>}> */}
+      <Routes>
+        <Route path="/" element={<ContactsAppBar />}>
+          <Route path="contacts" element={<Contacts />} />
+          <Route path="register" element={<RegistrationForm />} />
+          <Route path="login" element={<LoginForm />} />
+        </Route>
+      </Routes>
+      {/* </Suspense> */}
+
+      {/* <ToastContainer />
+        <MainTitle>Phonebook</MainTitle>
+        <ContactForm />
+        <Title>Contacts</Title>
+        <Filter />
+        <ContactList />
+      </Wrapper> */}
+    </>
   );
 };
 
