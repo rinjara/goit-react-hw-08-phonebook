@@ -47,7 +47,6 @@ export default function RegistrationForm() {
       password: data.get('password'),
     };
 
-    console.log(credentials);
     dispatch(registration(credentials));
   };
 

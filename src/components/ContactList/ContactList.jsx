@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 
 export const ContactList = () => {
   const { data: contacts, error, isLoading } = useFetchContactsQuery();
+
   const filterName = useSelector(selectFilter).toLowerCase().trim();
   const filteredContacts =
     filterName === ''

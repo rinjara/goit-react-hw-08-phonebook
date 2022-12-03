@@ -47,10 +47,6 @@ export default function LoginForm() {
         password: data.get('password'),
       })
     );
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
   };
 
   return (

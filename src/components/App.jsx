@@ -17,6 +17,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { refreshUser } from 'redux/auth/operations';
 import { selectIsRefreshing } from 'redux/auth/selectors';
 import Skeleton from './Skeleton/Skeleton';
+import RestrictedRoute from './RestrictedRoute';
+import PrivateRoute from './PrivateRoute';
 
 // import ContactsAppBar from './AppBar/AppBar';
 
@@ -33,9 +35,25 @@ export const App = () => {
   ) : (
     <Routes>
       <Route path="/" element={<ContactsAppBar />}>
-        <Route path="contacts" element={<Contacts />} />
-        <Route path="register" element={<RegistrationForm />} />
-        <Route path="login" element={<LoginForm />} />
+        <Route
+          path="contacts"
+          element={<PrivateRoute component={Contacts} redirectTo="/login" />}
+        />
+        <Route
+          path="register"
+          element={
+            <RestrictedRoute
+              component={RegistrationForm}
+              redirectTo="/contacts"
+            />
+          }
+        />
+        <Route
+          path="login"
+          element={
+            <RestrictedRoute component={LoginForm} redirectTo="/contacts" />
+          }
+        />
       </Route>
     </Routes>
   );
