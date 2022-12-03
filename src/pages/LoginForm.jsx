@@ -12,6 +12,8 @@ import Grid from '@mui/material/Grid';
 import LockIcon from '@mui/icons-material/Lock';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useDispatch } from 'react-redux';
+import { login } from 'redux/auth/operations';
 
 function Copyright(props) {
   return (
@@ -34,9 +36,17 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function LoginForm() {
+  const dispatch = useDispatch();
+
   const handleSubmit = event => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    dispatch(
+      login({
+        email: data.get('email'),
+        password: data.get('password'),
+      })
+    );
     console.log({
       email: data.get('email'),
       password: data.get('password'),

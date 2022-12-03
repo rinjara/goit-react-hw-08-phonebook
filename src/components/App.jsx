@@ -12,36 +12,51 @@ import RegistrationForm from '../pages/RegistrationForm';
 // import { ContactForm } from './ContactForm/ContactForm';
 import ContactsAppBar from './AppBar/AppBar';
 import Contacts from 'pages/Contacts';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { refreshUser } from 'redux/auth/operations';
+import { selectIsRefreshing } from 'redux/auth/selectors';
+import Skeleton from './Skeleton/Skeleton';
 
 // import ContactsAppBar from './AppBar/AppBar';
 
 export const App = () => {
-  return (
-    <>
-      {/* <ContactsAppBar />
-      <RegistrationForm />
-      <LoginForm /> */}
+  const dispatch = useDispatch();
+  const isRefreshing = useSelector(selectIsRefreshing);
 
-      {/* <Wrapper> */}
-      {/* <Suspense fallback={<div>Loading...</div>}> */}
-      <Routes>
-        <Route path="/" element={<ContactsAppBar />}>
-          <Route path="contacts" element={<Contacts />} />
-          <Route path="register" element={<RegistrationForm />} />
-          <Route path="login" element={<LoginForm />} />
-        </Route>
-      </Routes>
-      {/* </Suspense> */}
+  useEffect(() => {
+    dispatch(refreshUser());
+  }, [dispatch]);
 
-      {/* <ToastContainer />
-        <MainTitle>Phonebook</MainTitle>
-        <ContactForm />
-        <Title>Contacts</Title>
-        <Filter />
-        <ContactList />
-      </Wrapper> */}
-    </>
+  return isRefreshing ? (
+    <Skeleton />
+  ) : (
+    <Routes>
+      <Route path="/" element={<ContactsAppBar />}>
+        <Route path="contacts" element={<Contacts />} />
+        <Route path="register" element={<RegistrationForm />} />
+        <Route path="login" element={<LoginForm />} />
+      </Route>
+    </Routes>
   );
+  // <>
+  //   <ContactsAppBar />
+  //   <RegistrationForm />
+  //   <LoginForm />
+
+  //   <Wrapper>
+  //   <Suspense fallback={<div>Loading...</div>}>
+
+  //   </Suspense>
+
+  //   <ToastContainer />
+  //     <MainTitle>Phonebook</MainTitle>
+  //     <ContactForm />
+  //     <Title>Contacts</Title>
+  //     <Filter />
+  //     <ContactList />
+  //   </Wrapper>
+  // </>
 };
 
 // const Home = lazy(() => import('pages/Home/Home'));

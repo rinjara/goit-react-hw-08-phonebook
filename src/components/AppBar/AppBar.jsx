@@ -9,14 +9,16 @@ import useScrollTrigger from '@mui/material/useScrollTrigger';
 // import Container from '@mui/material/Container';
 import Slide from '@mui/material/Slide';
 import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
+// import MenuIcon from '@mui/icons-material/Menu';
 // import Button from '@mui/material/Button';
 import AuthNav from './Navigation/AuthNav';
 import { Container } from '@mui/material';
-import { Outlet } from 'react-router-dom';
+import { NavLink, Outlet } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectIsLoggedIn } from 'redux/auth/selectors';
 import UserNav from './Navigation/UserNav';
+import Navigation from './Navigation/Navigation';
+import AddIcCallIcon from '@mui/icons-material/AddIcCall';
 
 function HideOnScroll(props) {
   const { children, window } = props;
@@ -41,31 +43,34 @@ HideOnScroll.propTypes = {
 
 export default function ContactsAppBar(props) {
   const isLoggedIn = useSelector(selectIsLoggedIn);
+
   return (
     <React.Fragment>
       <CssBaseline />
       <HideOnScroll {...props}>
         <AppBar>
           <Toolbar>
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              sx={{ mr: 2 }}
-            >
-              <MenuIcon />
-            </IconButton>
+            <NavLink to="/">
+              <IconButton
+                size="large"
+                edge="start"
+                color="default"
+                aria-label="menu"
+                sx={{ mr: 2 }}
+              >
+                <AddIcCallIcon />
+              </IconButton>{' '}
+            </NavLink>
+
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Contacts
+              <Navigation />
             </Typography>
-            {/* <div>
-              <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                Register
-              </Typography>
-              <Button color="inherit">Login</Button>
-            </div> */}
-            {isLoggedIn ? <UserNav /> : <AuthNav />}
+            <div>
+              {/* <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}> */}
+              {isLoggedIn ? <UserNav /> : <AuthNav />}
+              {/* </Typography> */}
+              {/* <Button color="inherit">Login</Button> */}
+            </div>
           </Toolbar>
         </AppBar>
         {/* <AppBar>
