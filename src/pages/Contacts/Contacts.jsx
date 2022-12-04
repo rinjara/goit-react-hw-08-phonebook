@@ -1,5 +1,5 @@
 import React from 'react';
-import { MainTitle, Title, Wrapper } from 'components/App.styled';
+import { MainTitle, Title, Wrapper } from 'components/App/App.styled';
 import { ContactForm } from 'components/ContactForm/ContactForm';
 import { ContactList } from 'components/ContactList/ContactList';
 import { ToastContainer } from 'react-toastify';

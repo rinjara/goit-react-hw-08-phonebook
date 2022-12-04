@@ -1,12 +1,14 @@
 import { ListItem, StyledList } from './ContactList.styled';
 import { Contact } from './Contact';
-import { useFetchContactsQuery } from 'redux/contactsRTKSlice';
-import { selectFilter } from 'redux/selectors';
+import { useFetchContactsQuery } from 'redux/contacts/contactsRTKSlice';
+import { selectFilter } from 'redux/filter/selectors';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import { selectIsLoggedIn } from 'redux/auth/selectors';
 
 export const ContactList = () => {
   const { data: contacts, error, isLoading } = useFetchContactsQuery();
+  const isLoggedIn = useSelector(selectIsLoggedIn);
 
   const filterName = useSelector(selectFilter).toLowerCase().trim();
   const filteredContacts =
@@ -16,9 +18,11 @@ export const ContactList = () => {
           friend.name.toLowerCase().includes(filterName)
         );
 
+  const shouldShow = contacts && isLoggedIn;
+
   return (
     <div>
-      {contacts && (
+      {shouldShow && (
         <StyledList>
           {filteredContacts.map(contact => (
             <ListItem key={contact.id}>

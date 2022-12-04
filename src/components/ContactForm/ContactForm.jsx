@@ -10,7 +10,7 @@ import * as yup from 'yup';
 import {
   useAddContactMutation,
   useFetchContactsQuery,
-} from 'redux/contactsRTKSlice';
+} from 'redux/contacts/contactsRTKSlice';
 import { toast } from 'react-toastify';
 
 const phoneRegEx =

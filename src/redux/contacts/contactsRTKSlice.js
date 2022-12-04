@@ -4,15 +4,8 @@ export const contactsApi = createApi({
   reducerPath: 'contactsApi',
   baseQuery: fetchBaseQuery({
     baseUrl: 'https://connections-api.herokuapp.com',
-    prepareHeaders: (headers, { getState }) => {
-      const token = getState().auth.token;
-
-      if (token) {
-        headers.set('authorization', `Bearer ${token}`);
-      }
-
-      return headers;
-    },
+    prepareHeaders: (headers, { getState }) =>
+      headers.set('authorization', `Bearer ${getState().auth.token}`),
   }),
   tagTypes: ['Contact'],
   endpoints: builder => ({

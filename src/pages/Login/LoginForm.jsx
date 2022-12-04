@@ -14,6 +14,7 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useDispatch } from 'react-redux';
 import { login } from 'redux/auth/operations';
+import { NavLink } from 'react-router-dom';
 
 function Copyright(props) {
   return (
@@ -24,8 +25,8 @@ function Copyright(props) {
       {...props}
     >
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link color="inherit" href="https://github.com/rinjara" target="_blank">
+        rinjara
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -79,7 +80,7 @@ export default function LoginForm() {
               alignItems: 'center',
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <Avatar sx={{ m: 1, bgcolor: 'main' }}>
               <LockIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
@@ -124,15 +125,17 @@ export default function LoginForm() {
                 Sign In
               </Button>
               <Grid container>
-                <Grid item xs>
+                {/* <Grid item xs>
                   <Link href="#" variant="body2">
                     Forgot password?
                   </Link>
-                </Grid>
+                </Grid> */}
                 <Grid item>
-                  <Link href="#" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
+                  <NavLink to="/register">
+                    <Link href="#" variant="body2">
+                      {"Don't have an account? Register"}
+                    </Link>
+                  </NavLink>
                 </Grid>
               </Grid>
               <Copyright sx={{ mt: 5 }} />

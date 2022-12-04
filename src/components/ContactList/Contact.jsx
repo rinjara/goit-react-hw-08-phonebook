@@ -1,6 +1,6 @@
 import { DelButton, Paragraph, Text } from './ContactList.styled';
 import PropTypes from 'prop-types';
-import { useDeleteContactMutation } from 'redux/contactsRTKSlice';
+import { useDeleteContactMutation } from 'redux/contacts/contactsRTKSlice';
 import { toast } from 'react-toastify';
 
 export const Contact = ({ name, number, id }) => {
